@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hey Buddy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#15121c;--surface:#1e1a28;--line:#322c42;--text:#eee9f4;--muted:#9d95ad;--gold:#d9bb8c;--rose:#ee8fa6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font:400 15px/1.45 Figtree,system-ui,sans-serif}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+#app{max-width:470px;margin:0 auto;min-height:100vh;border-inline:1px solid var(--line);position:relative;padding-bottom:76px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg);border-bottom:1px solid var(--line)}
+.logo{font:italic 600 27px Fraunces,Georgia,serif;letter-spacing:-.01em;color:var(--gold)}
+.stories{display:flex;gap:14px;overflow-x:auto;padding:16px 18px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.story{flex:none;text-align:center;width:62px;font-size:12px;color:var(--muted)}
+.ring{width:62px;height:62px;border-radius:50%;padding:2px;background:conic-gradient(var(--gold),var(--rose),var(--gold));margin-bottom:5px}
+.ring.you{background:var(--line)}
+.av{width:100%;height:100%;border-radius:50%;border:3px solid var(--bg);display:grid;place-items:center;font-weight:600;color:#15121c}
+.post{border-bottom:1px solid var(--line);padding-bottom:6px}
+.phead{display:flex;align-items:center;gap:10px;padding:12px 18px}
+.phead .av{width:34px;height:34px;border:0;font-size:14px;flex:none}
+.phead b{font-weight:600}
+.phead small{display:block;color:var(--muted);font-size:12px;line-height:1.2}
+.media{aspect-ratio:1/1;width:100%;display:grid;place-items:center;text-align:center;padding:36px;position:relative;user-select:none;overflow:hidden}
+.media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.media p{margin:0;font:italic 600 26px/1.25 Fraunces,Georgia,serif;color:#15121c;position:relative}
+.pop{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0}
+.pop svg{width:96px;height:96px;fill:#fff;filter:drop-shadow(0 4px 14px rgba(0,0,0,.4))}
+.pop.go{animation:pop .7s ease-out}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}25%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1)}}
+.acts{display:flex;align-items:center;gap:16px;padding:12px 18px 4px}
+.acts .sp{flex:1}
+.ic{width:25px;height:25px;fill:none;stroke:var(--text);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
+.on .ic{fill:var(--rose);stroke:var(--rose)}
+.sv.on .ic{fill:var(--gold);stroke:var(--gold)}
+.meta{padding:2px 18px;font-size:14px}
+.cap b{font-weight:600;margin-right:6px}
+.cmts{color:var(--muted);margin-top:4px}
+.cmt{color:var(--text);margin-top:2px}
+.cmt b{font-weight:600;margin-right:6px}
+.cform{display:flex;gap:8px;padding:8px 18px}
+.cform input{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:20px;color:var(--text);padding:8px 14px;font:inherit;font-size:14px}
+.cform button{color:var(--gold);font-weight:600}
+.cform button:disabled{opacity:.4;cursor:default}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:470px;display:flex;justify-content:space-around;align-items:center;background:var(--bg);border-top:1px solid var(--line);border-inline:1px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));z-index:6}
+nav button{padding:6px 22px}
+nav .ic{stroke:var(--muted)}
+nav button.act .ic{stroke:var(--gold)}
+nav .plus{background:var(--gold);border-radius:12px;padding:6px 16px}
+nav .plus .ic{stroke:#15121c}
+.prof{padding:22px 18px;display:flex;align-items:center;gap:18px}
+.prof .av{width:76px;height:76px;border:0;font-size:30px;flex:none}
+.prof h2{margin:0;font:italic 600 24px Fraunces,Georgia,serif}
+.prof p{margin:2px 0 0;color:var(--muted)}
+.stats{display:flex;gap:20px;margin-top:8px}
+.stats b{display:block;font-size:17px}
+.stats span{font-size:12px;color:var(--muted)}
+.tabs{display:flex;border-top:1px solid var(--line)}
+.tabs button{flex:1;padding:12px;color:var(--muted);border-bottom:2px solid transparent}
+.tabs button.act{color:var(--text);border-color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.grid .media{aspect-ratio:1/1;padding:8px;cursor:pointer}
+.grid .media p{font-size:12px}
+.empty{padding:48px 28px;text-align:center;color:var(--muted)}
+.sheet{position:fixed;inset:0;z-index:20;background:rgba(10,8,14,.7);display:none;align-items:flex-end;justify-content:center}
+.sheet.open{display:flex}
+.card{width:100%;max-width:470px;max-height:92vh;overflow:auto;background:var(--surface);border-radius:20px 20px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.card h3{margin:0 0 14px;font:italic 600 22px Fraunces,Georgia,serif}
+.prev{aspect-ratio:1/1;border-radius:14px;overflow:hidden;display:grid;place-items:center;text-align:center;padding:30px;position:relative;margin-bottom:12px}
+.prev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.prev p{margin:0;font:italic 600 24px/1.25 Fraunces,Georgia,serif;color:#15121c;position:relative}
+.row{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.chip{width:30px;height:30px;border-radius:50%;border:2px solid transparent}
+.chip.sel{border-color:var(--text)}
+.ghost{border:1px solid var(--line);border-radius:20px;padding:7px 14px;font-size:14px}
+textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:12px;font:inherit;resize:none;height:84px}
+.pri{width:100%;margin-top:12px;background:var(--gold);color:#15121c;font-weight:600;padding:12px;border-radius:12px}
+.pri:disabled{opacity:.4;cursor:default}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--text);color:#15121c;padding:9px 18px;border-radius:20px;font-weight:500;z-index:30;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.who{display:flex;gap:10px;align-items:center;text-align:left}
+.story{position:relative;cursor:pointer}
+.story .add{position:absolute;right:0;top:40px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#15121c;font-weight:700;border:2px solid var(--bg);display:grid;place-items:center;line-height:1}
+.badge{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:12px;padding:1px 9px;margin-left:8px;vertical-align:middle;font-family:Figtree,sans-serif;font-style:normal;font-weight:500}
+.pb{display:flex;gap:8px;padding:0 18px 16px}
+.btn{flex:1;padding:9px;border-radius:10px;background:var(--gold);color:#15121c;font-weight:600;text-align:center}
+.btn.alt{background:var(--surface);color:var(--text);border:1px solid var(--line)}
+.sw{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;border-top:1px solid var(--line)}
+.tog{width:44px;height:26px;border-radius:13px;background:var(--line);position:relative;flex:none}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--text);transition:left .15s}
+.tog.on{background:var(--gold)}.tog.on::after{left:21px;background:#15121c}
+.lock{padding:48px 28px;text-align:center;color:var(--muted);border-top:1px solid var(--line)}
+.lock b{display:block;color:var(--text);margin-bottom:4px}
+.back{padding:10px 18px 0;color:var(--muted)}
+.viewer{position:fixed;inset:0;z-index:40;background:#0d0b12;display:none;justify-content:center}
+.viewer.open{display:flex}
+.vwrap{width:100%;max-width:470px;position:relative;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.bars{display:flex;gap:4px;padding:12px 14px 0}
+.bars i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.25);overflow:hidden}
+.bars i b{display:block;height:100%;width:0;background:#fff}
+.bars i.done b{width:100%}
+.bars i.cur b{animation:fill 5s linear forwards}
+@keyframes fill{to{width:100%}}
+.vhead{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.vhead .av{width:34px;height:34px;border:0;font-size:14px;flex:none}
+.vbody{flex:1;display:grid;place-items:center;text-align:center;padding:32px;position:relative;overflow:hidden}
+.vbody img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vbody p{position:relative;margin:0;font:italic 600 30px/1.25 Fraunces,Georgia,serif;color:#15121c}
+.vbody img+p{align-self:end;color:#fff;font-size:20px;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+.vtap{position:absolute;left:0;right:0;top:96px;bottom:80px;display:flex}
+.vtap button{flex:1}
+.vfoot{display:flex;align-items:center;gap:12px;padding:14px 18px calc(14px + env(safe-area-inset-bottom,0px));position:relative;z-index:2}
+.field{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:11px 12px;font:inherit;margin-bottom:10px}
+.err{color:var(--rose);font-size:13px;min-height:18px;margin-bottom:4px}
+
+nav button{padding:6px 14px}
+#nDm{position:relative}
+.dot{position:absolute;top:4px;right:8px;width:9px;height:9px;border-radius:50%;background:var(--rose);border:2px solid var(--bg)}
+.dot2{width:10px;height:10px;border-radius:50%;background:var(--rose);flex:none}
+.tag{color:var(--gold);font-weight:500;margin-right:3px}
+.del{margin-left:auto;color:var(--muted);font-size:13px}
+.urow{display:flex;align-items:center;gap:12px;padding:10px 18px}
+.urow .av{width:44px;height:44px;border:0;flex:none}
+.sec{padding:14px 18px 8px;font-weight:600}
+.chead{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--line)}
+.chead .av{width:32px;height:32px;border:0;font-size:13px}
+.msgs{height:calc(100vh - 250px);min-height:200px;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:6px}
+.b{max-width:78%;padding:9px 14px;border-radius:18px 18px 18px 4px;background:var(--surface);border:1px solid var(--line);align-self:flex-start;overflow-wrap:anywhere}
+.b.me{align-self:flex-end;background:var(--gold);color:#15121c;border:0;border-radius:18px 18px 4px 18px}
+.mform{display:flex;gap:8px;padding:8px 18px;border-top:1px solid var(--line)}
+.mform input{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:20px;color:var(--text);padding:9px 14px;font:inherit;font-size:14px}
+.mform button{color:var(--gold);font-weight:600}
+.ghost.sel2{border-color:var(--gold);color:var(--gold)}
+</style>
+</head>
+<body>
+<div id="app">
+  <header><span class="logo">Hey Buddy</span></header>
+  <main id="main"></main>
+  <nav>
+    <button id="nHome" class="act" aria-label="Home"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></button>
+    <button id="nEx" aria-label="Explore"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+    <button id="nNew" class="plus" aria-label="Create post"><svg class="ic" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button id="nDm" aria-label="Messages"><svg class="ic" viewBox="0 0 24 24"><path d="M3 5h18v12H8l-5 4z"/></svg><i class="dot" id="dmdot" hidden></i></button>
+    <button id="nMe" aria-label="Profile"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></button>
+  </nav>
+</div>
+
+<div class="sheet" id="sheet"><div class="card">
+  <h3 id="ctitle">New post</h3>
+  <div class="prev" id="prev"><p>Say hey to your buddies</p></div>
+  <div class="row">
+    <label class="ghost" style="cursor:pointer">Add photo<input id="file" type="file" accept="image/*" hidden></label>
+    <span id="chips" class="row" style="margin:0"></span>
+  </div>
+  <div class="row" id="fl"></div>
+  <textarea id="cap" placeholder="Write a caption" maxlength="300"></textarea>
+  <button class="pri" id="share" disabled>Share</button>
+  <button class="ghost" id="cancel" style="width:100%;margin-top:8px">Cancel</button>
+</div></div>
+<div class="sheet" id="psheet"><div class="card">
+  <h3 id="ptitle">Create your profile</h3>
+  <input class="field" id="uname" placeholder="Username" maxlength="20" autocomplete="off" aria-label="Username">
+  <input class="field" id="ubio" placeholder="Short bio (optional)" maxlength="100" aria-label="Bio">
+  <label class="sw" style="border:0;padding:6px 0"><span><b>Private account</b><br><small style="color:var(--muted)">Off: anyone can see your posts and stories. On: only followers you approve can.</small></span><input type="checkbox" id="upriv" style="width:22px;height:22px;flex:none"></label>
+  <div class="err" id="perr"></div>
+  <button class="pri" id="psave" style="margin-top:0">Create profile</button>
+  <button class="ghost" id="pcancel" style="width:100%;margin-top:8px;display:none">Cancel</button>
+</div></div>
+<div class="viewer" id="viewer"><div class="vwrap" id="vwrap"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const $=id=>document.getElementById(id);
+const H=36e5,now=Date.now();
+const GR=['linear-gradient(135deg,#d9bb8c,#ee8fa6)','linear-gradient(135deg,#a9c4e8,#d9bb8c)','linear-gradient(135deg,#c9a7ee,#ee8fa6)','linear-gradient(135deg,#8fd6c4,#a9c4e8)','linear-gradient(135deg,#f3c98b,#c9a7ee)'];
+const SU={mira:{bio:'Chasing sunsets and good light.',priv:0,g:0,fr:312,fg:180},jonah:{bio:'Vinyl, coffee, long walks.',priv:0,g:1,fr:208,fg:95},sana:{bio:'Runner. Keeps it private.',priv:1,g:2,fr:96,fg:70},theo:{bio:'New city, new notebook.',priv:0,g:3,fr:154,fg:210}};
+const seedP=[
+ {id:1,user:'mira',text:'Golden hour never gets old.',bg:0,cap:'Rooftop with the best people. #goldenhour #rooftop',likes:['jonah','sana'],comments:[{u:'sana',t:'Take me next time!'}],t:now-2*H},
+ {id:2,user:'jonah',text:'Sunday reset: coffee, vinyl, nothing else.',bg:1,cap:'Slow mornings are underrated. #sundayreset #vinyl',likes:['mira'],comments:[],t:now-7*H},
+ {id:3,user:'sana',text:'Finished my first 10k today!',bg:2,cap:'Legs are jelly, heart is full. #running',likes:['mira','jonah','theo'],comments:[{u:'theo',t:'Legend!'}],t:now-20*H},
+ {id:4,user:'theo',text:'New city, new notebook.',bg:3,cap:'Day one of the move. #newcity',likes:[],comments:[],t:now-30*H}];
+const seedS=[
+ {id:11,user:'mira',text:'Heading to the rooftop',bg:0,likes:[],t:now-2*H},
+ {id:12,user:'mira',text:'Sunset was unreal',bg:4,likes:[],t:now-H},
+ {id:13,user:'jonah',text:'Now spinning: Sunday jazz',bg:1,likes:[],t:now-3*H},
+ {id:14,user:'sana',text:'Post-run snack',bg:2,likes:[],t:now-4*H},
+ {id:15,user:'theo',text:'Unpacking boxes',bg:3,likes:[],t:now-5*H}];
+let S={me:null,users:SU,posts:seedP,stories:seedS,saved:[],following:['mira'],requested:[]};
+try{const r=localStorage.getItem('heybuddy2');if(r)S=JSON.parse(r)}catch(e){}
+if(!S.chats){S.chats={mira:[{f:'mira',t:'Hey buddy! Welcome to the app.',ts:now-H}]};S.unread=['mira']}
+let xq='',cu=null,view='home',pu=null,tab='posts',mode='post',draft={bg:0,img:null},V=null,vt;
+const save=()=>{try{localStorage.setItem('heybuddy2',JSON.stringify(S))}catch(e){toast('Storage is full, so this will not be kept after you close the page.')}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ago=t=>{const h=Math.floor((Date.now()-t)/H);return h<1?'Just now':h<24?h+'h ago':Math.floor(h/24)+'d ago'};
+const ICON={heart:'<path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/>',chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',mark:'<path d="M6 3h12v18l-6-4-6 4z"/>'};
+const ic=n=>`<svg class="ic" viewBox="0 0 24 24">${ICON[n]}</svg>`;
+const avatar=u=>`<div class="av" style="background:${GR[(S.users[u]||{g:0}).g]}">${esc(u[0].toUpperCase())}</div>`;
+const FL=[['Normal','none'],['Warm','sepia(.35) saturate(1.3) contrast(1.05)'],['Mono','grayscale(1) contrast(1.1)'],['Fade','contrast(.85) brightness(1.1) saturate(.8)'],['Vivid','saturate(1.7) contrast(1.1)'],['Noir','grayscale(1) contrast(1.4) brightness(.9)']];
+const tags=s=>esc(s).replace(/#(\w+)/g,'<button class="tag" data-tag="$1">#$1</button>');
+const canSee=u=>u===S.me||!S.users[u].priv||S.following.includes(u);
+const live=u=>S.stories.filter(s=>s.user===u&&Date.now()-s.t<24*H);
+const media=p=>`<div class="media" style="background:${GR[p.bg]}" data-id="${p.id}">${p.img?`<img src="${p.img}" style="filter:${p.f||'none'}" alt="Photo by ${esc(p.user)}">`:`<p>${esc(p.text||'')}</p>`}<div class="pop"><svg viewBox="0 0 24 24">${ICON.heart}</svg></div></div>`;
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2400)}
+
+function postHTML(p){
+ const liked=p.likes.includes(S.me),sv=S.saved.includes(p.id);
+ const cm=p.comments.slice(-2).map(c=>`<div class="cmt"><b>${esc(c.u)}</b>${esc(c.t)}</div>`).join('');
+ return `<article class="post" data-id="${p.id}">
+ <div class="phead"><button class="who" data-u="${p.user}">${avatar(p.user)}<span><b>${esc(p.user)}</b><small>${ago(p.t)}</small></span></button>${p.user===S.me?'<button class="del" data-a="del" aria-label="Delete post">Delete</button>':''}</div>
+ ${media(p)}
+ <div class="acts">
+  <button class="${liked?'on':''}" data-a="like" aria-label="Like" aria-pressed="${liked}">${ic('heart')}</button>
+  <button data-a="focus" aria-label="Comment">${ic('chat')}</button><span class="sp"></span>
+  <button class="sv ${sv?'on':''}" data-a="save" aria-label="Save" aria-pressed="${sv}">${ic('mark')}</button>
+ </div>
+ <div class="meta"><b>${p.likes.length} ${p.likes.length===1?'like':'likes'}</b>
+ ${p.cap?`<div class="cap"><b>${esc(p.user)}</b>${tags(p.cap)}</div>`:''}
+ ${p.comments.length>2?`<div class="cmts">View all ${p.comments.length} comments</div>`:''}${cm}</div>
+ <div class="cform"><input placeholder="Add a comment" aria-label="Add a comment"><button data-a="send" disabled>Post</button></div>
+ </article>`;
+}
+
+function profileHTML(u){
+ const us=S.users[u],mine=u===S.me,see=canSee(u);
+ const ps=S.posts.filter(p=>p.user===u).sort((a,b)=>b.t-a.t);
+ const fr=mine?(us.fr||0):us.fr+(S.following.includes(u)?1:0),fg=mine?S.following.length:us.fg;
+ const f=S.following.includes(u),r=S.requested.includes(u);
+ const btn=mine?`<button class="btn alt" data-a2="edit">Edit profile</button>`:`<button class="btn ${f||r?'alt':''}" data-a2="follow" data-f="${u}">${f?'Following':r?'Requested':'Follow'}</button>${see?`<button class="btn alt" data-a2="msg" data-f="${u}">Message</button>`:''}`;
+ let body;
+ if(!see)body=`<div class="lock"><b>This account is private</b>Follow ${esc(u)} to see their posts and stories.</div>`;
+ else{
+  const src=mine&&tab==='saved'?S.posts.filter(p=>S.saved.includes(p.id)):ps;
+  body=(mine?`<div class="tabs"><button data-tab="posts" class="${tab==='posts'?'act':''}">Posts</button><button data-tab="saved" class="${tab==='saved'?'act':''}">Saved</button></div>`:'<div class="tabs" style="height:1px"></div>')+
+  (src.length?`<div class="grid">${src.map(media).join('')}</div>`:`<div class="empty">${mine?(tab==='saved'?'Tap the bookmark on any post to save it here.':'You have not posted yet. Tap the plus button to start.'):'No posts yet.'}</div>`);
+ }
+ return `${mine?'':'<button class="back" data-a2="back">‹ Back</button>'}
+ <div class="prof">${avatar(u)}<div><h2>${esc(u)}<span class="badge">${us.priv?'Private':'Public'}</span></h2><p>${esc(us.bio||'')}</p>
+ <div class="stats"><div><b>${ps.length}</b><span>posts</span></div><div><b>${fr}</b><span>followers</span></div><div><b>${fg}</b><span>following</span></div></div></div></div>
+ <div class="pb">${btn}</div>
+ ${mine?`<div class="sw"><div><b>Private account</b><br><small style="color:var(--muted)">Only followers you approve can see your posts and stories</small></div><button class="tog ${us.priv?'on':''}" data-a2="priv" role="switch" aria-checked="${!!us.priv}" aria-label="Private account"></button></div>`:''}
+ ${body}`;
+}
+
+function render(){
+ const m=$('main');
+ $('nHome').classList.toggle('act',view==='home');$('nEx').classList.toggle('act',view==='explore');$('nDm').classList.toggle('act',view==='dm'||view==='chat');$('dmdot').hidden=!(S.unread&&S.unread.length);$('nMe').classList.toggle('act',view==='me');
+ if(!S.me){m.innerHTML='';return}
+ if(view==='home'){
+  const mineS=live(S.me).length;
+  const names=Object.keys(S.users).filter(n=>n!==S.me&&canSee(n)&&live(n).length);
+  const st=`<div class="stories"><div class="story" data-story="${S.me}"><div class="ring ${mineS?'':'you'}">${avatar(S.me)}</div><span class="add" data-add aria-label="Add story">+</span>Your story</div>${names.map(n=>`<div class="story" data-story="${n}"><div class="ring">${avatar(n)}</div>${esc(n)}</div>`).join('')}</div>`;
+  const list=S.posts.filter(p=>canSee(p.user)).sort((a,b)=>b.t-a.t);
+  m.innerHTML=st+(list.length?list.map(postHTML).join(''):'<div class="empty">No posts yet. Tap the plus button to share your first one.</div>');
+ }else if(view==='explore'){m.innerHTML=exploreHTML();exres()}else if(view==='dm')m.innerHTML=dmHTML();else if(view==='chat'){m.innerHTML=chatHTML();msgsScroll()}else m.innerHTML=profileHTML(pu);
+}
+function openProfile(u){pu=u;view=u===S.me?'me':'profile';render();scrollTo(0,0)}
+
+function like(id,force){const p=S.posts.find(x=>x.id==id);if(!p)return;const i=p.likes.indexOf(S.me);if(i<0)p.likes.push(S.me);else if(!force)p.likes.splice(i,1);save();return p}
+function follow(u){
+ const f=S.following.indexOf(u);
+ if(f>=0){S.following.splice(f,1);toast('Unfollowed '+u)}
+ else if(S.requested.includes(u)){S.requested=S.requested.filter(x=>x!==u);toast('Request cancelled')}
+ else if(S.users[u].priv){S.requested.push(u);toast('Follow request sent');setTimeout(()=>approve(u),4000)}
+ else{S.following.push(u);toast('Following '+u)}
+ save();render();
+}
+function approve(u){if(!S.requested.includes(u))return;S.requested=S.requested.filter(x=>x!==u);S.following.push(u);save();toast(u+' accepted your request');render()}
+
+/* stories */
+function openStories(u){const l=live(u);if(!l.length)return;V={u,l,i:0};$('viewer').classList.add('open');showS()}
+function closeV(){clearTimeout(vt);V=null;$('viewer').classList.remove('open');render()}
+function nextS(){if(!V)return;if(V.i<V.l.length-1){V.i++;showS()}else closeV()}
+function showS(){
+ clearTimeout(vt);const s=V.l[V.i],mine=V.u===S.me,liked=s.likes.includes(S.me);
+ $('vwrap').innerHTML=`<div class="bars">${V.l.map((_,k)=>`<i class="${k<V.i?'done':k===V.i?'cur':''}"><b></b></i>`).join('')}</div>
+ <div class="vhead">${avatar(V.u)}<b>${esc(V.u)}</b><small style="color:var(--muted)">${ago(s.t)}</small><span style="flex:1"></span><button data-a2="vclose" aria-label="Close" style="font-size:22px;padding:4px 8px">✕</button></div>
+ <div class="vbody" style="background:${GR[s.bg]}">${s.img?`<img src="${s.img}" style="filter:${s.f||'none'}" alt="Story photo">`:''}${s.text?`<p>${esc(s.text)}</p>`:''}</div>
+ <div class="vtap"><button data-a2="vprev" aria-label="Previous story"></button><button data-a2="vnext" aria-label="Next story"></button></div>
+ <div class="vfoot">${mine?`<span style="color:var(--muted)">${s.likes.length} ${s.likes.length===1?'like':'likes'}</span>`:`<button class="${liked?'on':''}" data-a2="slike" aria-label="Like story">${ic('heart')}</button><span style="color:var(--muted)">${liked?'You liked this story':'Tap the heart to like'}</span>`}</div>`;
+ vt=setTimeout(nextS,5000);
+}
+
+document.addEventListener('click',e=>{
+ const t=e.target;
+ const tb=t.closest('[data-tab]');if(tb){tab=tb.dataset.tab;render();return}
+ const tg=t.closest('[data-tag]');if(tg){xq='#'+tg.dataset.tag;view='explore';render();scrollTo(0,0);return}
+ const a2=t.closest('[data-a2]');
+ if(a2){
+  const a=a2.dataset.a2;
+  if(a==='follow')follow(a2.dataset.f);
+  else if(a==='back'){view='home';render();scrollTo(0,0)}
+  else if(a==='edit')openP(true);
+  else if(a==='priv'){const u=S.users[S.me];u.priv=u.priv?0:1;save();render();toast(u.priv?'Account is now private':'Account is now public')}
+  else if(a==='msg')openChat(a2.dataset.f);
+  else if(a==='dmback'){view='dm';cu=null;render()}
+  else if(a==='send')sendMsg();
+  else if(a==='vclose')closeV();
+  else if(a==='vnext')nextS();
+  else if(a==='vprev'){if(V&&V.i>0){V.i--;showS()}}
+  else if(a==='slike'){const s=V.l[V.i],i=s.likes.indexOf(S.me);i<0?s.likes.push(S.me):s.likes.splice(i,1);save();showS()}
+  return;
+ }
+ const cr=t.closest('[data-chat]');if(cr){openChat(cr.dataset.chat);return}
+ const st=t.closest('[data-story]');
+ if(st){const u=st.dataset.story;if(u===S.me&&(t.closest('[data-add]')||!live(u).length))openComposer('story');else openStories(u);return}
+ const w=t.closest('[data-u]');if(w){openProfile(w.dataset.u);return}
+ const art=t.closest('.post'),b=t.closest('[data-a]');
+ if(art&&b){
+  const id=art.dataset.id,a=b.dataset.a;
+  if(a==='like')art.outerHTML=postHTML(like(id));
+  else if(a==='save'){const n=+id,i=S.saved.indexOf(n);i<0?S.saved.push(n):S.saved.splice(i,1);save();art.outerHTML=postHTML(S.posts.find(x=>x.id==n));toast(i<0?'Saved':'Removed from saved')}
+  else if(a==='focus')art.querySelector('.cform input').focus();
+  else if(a==='del'){if(b.dataset.armed){S.posts=S.posts.filter(x=>x.id!=id);S.saved=S.saved.filter(x=>x!=id);save();render();toast('Post deleted')}else{b.dataset.armed=1;b.textContent='Tap again to delete';b.style.color='var(--rose)';setTimeout(()=>{b.dataset.armed='';b.textContent='Delete';b.style.color=''},3000)}}
+  else if(a==='send'){const inp=art.querySelector('.cform input'),v=inp.value.trim();if(!v)return;const p=S.posts.find(x=>x.id==id);p.comments.push({u:S.me,t:v});save();art.outerHTML=postHTML(p)}
+ }
+});
+document.addEventListener('dblclick',e=>{
+ const m=e.target.closest('.post .media');if(!m)return;
+ const art=m.closest('.post');like(art.dataset.id,true);
+ const pop=m.querySelector('.pop');pop.classList.remove('go');void pop.offsetWidth;pop.classList.add('go');
+ const p=S.posts.find(x=>x.id==art.dataset.id);setTimeout(()=>{art.outerHTML=postHTML(p)},600);
+});
+document.addEventListener('input',e=>{if(e.target.id==='xq'){xq=e.target.value;exres()}if(e.target.matches('.cform input'))e.target.nextElementSibling.disabled=!e.target.value.trim()});
+document.addEventListener('keydown',e=>{
+ if(e.key==='Enter'&&e.target.id==='minp'){e.preventDefault();sendMsg()}
+ if(e.key==='Enter'&&e.target.matches('.cform input')){e.preventDefault();e.target.nextElementSibling.click()}
+ if(e.key==='Escape'){if(V)closeV();else{closeSheet();if(S.me)closeP()}}
+});
+$('nHome').onclick=()=>{view='home';render();scrollTo(0,0)};
+$('nMe').onclick=()=>{if(S.me)openProfile(S.me)};
+$('nEx').onclick=()=>{xq='';view='explore';render();scrollTo(0,0)};
+$('nDm').onclick=()=>{view='dm';render();scrollTo(0,0)};
+
+/* explore */
+function exploreHTML(){return `<div style="padding:14px 18px"><input class="field" id="xq" placeholder="Search people, captions or #tags" value="${esc(xq)}" aria-label="Search" autocomplete="off" style="margin:0"></div><div id="exres"></div>`}
+function exres(){
+ const box=$('exres');if(!box)return;const q=xq.trim().toLowerCase(),hq=q[0]==='#';
+ const vis=S.posts.filter(p=>canSee(p.user));
+ const us=Object.keys(S.users).filter(u=>u!==S.me&&(q?(!hq&&(u.includes(q)||(S.users[u].bio||'').toLowerCase().includes(q))):!S.following.includes(u)));
+ const ps=q?vis.filter(p=>((p.cap||'')+' '+(p.text||'')).toLowerCase().includes(q)):[...vis].sort((a,b)=>b.likes.length-a.likes.length);
+ const row=u=>{const f=S.following.includes(u),r=S.requested.includes(u);return `<div class="urow"><button class="who" data-u="${u}" style="flex:1;min-width:0">${avatar(u)}<span><b>${esc(u)}</b><span class="badge">${S.users[u].priv?'Private':'Public'}</span><small style="display:block;color:var(--muted)">${esc(S.users[u].bio||'')}</small></span></button><button class="btn ${f||r?'alt':''}" data-a2="follow" data-f="${u}" style="flex:none;padding:7px 14px">${f?'Following':r?'Requested':'Follow'}</button></div>`};
+ box.innerHTML=(us.length?`<div class="sec">${q?'People':'Suggested for you'}</div>${us.map(row).join('')}`:'')+(ps.length?`<div class="sec">${q?'Posts':'Trending now'}</div><div class="grid">${ps.map(media).join('')}</div>`:'')+(!us.length&&!ps.length?'<div class="empty">Nothing found. Try another name or a #tag.</div>':'');
+}
+/* messages */
+const REP=['Haha, love that.','Tell me more!','Same here, honestly.','Let us catch up soon.','Nice one!','You made my day.'];
+const lastMsg=u=>{const c=S.chats[u]||[];return c[c.length-1]};
+function dmHTML(){
+ const us=Object.keys(S.users).filter(u=>u!==S.me&&canSee(u)&&(S.chats[u]||S.following.includes(u)));
+ us.sort((a,b)=>((lastMsg(b)||{ts:0}).ts)-((lastMsg(a)||{ts:0}).ts));
+ return `<div class="sec" style="font:italic 600 22px Fraunces,Georgia,serif">Messages</div>`+(us.length?us.map(u=>{const m=lastMsg(u),un=(S.unread||[]).includes(u);return `<button class="urow" data-chat="${u}" style="width:100%;text-align:left">${avatar(u)}<span style="flex:1;min-width:0"><b>${esc(u)}</b><small style="display:block;color:${un?'var(--text)':'var(--muted)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m?esc((m.f===S.me?'You: ':'')+m.t):'Say hey'}</small></span>${un?'<i class="dot2"></i>':''}</button>`}).join(''):'<div class="empty">Follow someone, then message them from their profile.</div>');
+}
+function openChat(u){if(!canSee(u))return;cu=u;view='chat';S.unread=(S.unread||[]).filter(x=>x!==u);save();render();scrollTo(0,0)}
+const bub=m=>`<div class="b ${m.f===S.me?'me':''}">${esc(m.t)}</div>`;
+function chatHTML(){const c=S.chats[cu]||[];return `<div class="chead"><button data-a2="dmback" aria-label="Back to messages" style="font-size:24px;padding:0 6px">‹</button><button class="who" data-u="${cu}">${avatar(cu)}<b>${esc(cu)}</b></button></div><div class="msgs" id="msgs">${c.map(bub).join('')||'<div class="empty">Say hey to '+esc(cu)+'.</div>'}</div><div class="mform"><input id="minp" placeholder="Message" autocomplete="off" aria-label="Message"><button data-a2="send">Send</button></div>`}
+function msgsDraw(){const b=$('msgs');if(!b)return;b.innerHTML=(S.chats[cu]||[]).map(bub).join('');msgsScroll()}
+function msgsScroll(){const b=$('msgs');if(b)b.scrollTop=b.scrollHeight}
+function sendMsg(){
+ const i=$('minp'),v=i&&i.value.trim();if(!v)return;const u=cu;
+ (S.chats[u]=S.chats[u]||[]).push({f:S.me,t:v,ts:Date.now()});i.value='';save();msgsDraw();
+ setTimeout(()=>{(S.chats[u]=S.chats[u]||[]).push({f:u,t:REP[Math.floor(Math.random()*REP.length)],ts:Date.now()});
+  if(view==='chat'&&cu===u)msgsDraw();else{S.unread=[...new Set([...(S.unread||[]),u])];toast(u+' sent you a message');render()}
+  save()},1400);
+}
+
+/* composer (post or story) */
+function drawPrev(){
+ const pv=$('prev');pv.style.background=GR[draft.bg];const cap=$('cap').value.trim();
+ $('fl').innerHTML=draft.img?FL.map((f,i)=>`<button class="ghost ${i===(draft.f||0)?'sel2':''}" data-fl="${i}">${f[0]}</button>`).join(''):'';
+ pv.innerHTML=draft.img?`<img src="${draft.img}" style="filter:${FL[draft.f||0][1]}" alt="Selected photo">`:`<p>${esc(cap||(mode==='story'?'Share a moment for 24 hours':'Say hey to your buddies'))}</p>`;
+ $('share').disabled=!(draft.img||cap);
+}
+function openComposer(m){
+ if(!S.me)return;mode=m;draft={bg:0,img:null,f:0};$('cap').value='';$('file').value='';
+ $('ctitle').textContent=m==='story'?'New story':'New post';
+ $('cap').placeholder=m==='story'?'Add text to your story':'Write a caption';
+ $('share').textContent=m==='story'?'Share to story':'Share';
+ $('chips').innerHTML=GR.map((g,i)=>`<button class="chip ${i===0?'sel':''}" style="background:${g}" data-bg="${i}" aria-label="Colour ${i+1}"></button>`).join('');
+ drawPrev();$('sheet').classList.add('open');$('cap').focus();
+}
+function closeSheet(){$('sheet').classList.remove('open')}
+$('nNew').onclick=()=>openComposer('post');$('cancel').onclick=closeSheet;
+$('sheet').addEventListener('click',e=>{if(e.target===$('sheet'))closeSheet()});
+$('chips').addEventListener('click',e=>{const c=e.target.closest('[data-bg]');if(!c)return;draft.bg=+c.dataset.bg;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('sel',x===c));drawPrev()});
+$('cap').addEventListener('input',drawPrev);
+$('fl').addEventListener('click',e=>{const b=e.target.closest('[data-fl]');if(!b)return;draft.f=+b.dataset.fl;drawPrev()});
+$('file').addEventListener('change',e=>{
+ const f=e.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(1,800/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);draft.img=c.toDataURL('image/jpeg',.78);drawPrev()};im.src=r.result};
+ r.readAsDataURL(f);
+});
+$('share').onclick=()=>{
+ const cap=$('cap').value.trim();
+ if(mode==='story'){S.stories.push({id:Date.now(),user:S.me,text:cap,img:draft.img,f:FL[draft.f||0][1],bg:draft.bg,likes:[],t:Date.now()});toast('Story shared for 24 hours')}
+ else{S.posts.push({id:Date.now(),user:S.me,text:draft.img?'':cap,img:draft.img,f:FL[draft.f||0][1],bg:draft.bg,cap:draft.img?cap:'',likes:[],comments:[],t:Date.now()});toast('Posted')}
+ save();closeSheet();view='home';render();scrollTo(0,0);
+};
+
+/* profile create / edit */
+function openP(edit){
+ $('ptitle').textContent=edit?'Edit profile':'Create your profile';
+ $('psave').textContent=edit?'Save changes':'Create profile';
+ $('uname').value=edit?S.me:'';$('uname').disabled=!!edit;
+ $('ubio').value=edit?(S.users[S.me].bio||''):'';$('upriv').checked=edit?!!S.users[S.me].priv:false;
+ $('pcancel').style.display=edit?'block':'none';$('perr').textContent='';
+ $('psheet').classList.add('open');
+}
+function closeP(){$('psheet').classList.remove('open')}
+$('pcancel').onclick=closeP;
+$('psave').onclick=()=>{
+ const n=$('uname').value.trim().toLowerCase(),b=$('ubio').value.trim().slice(0,100),pr=$('upriv').checked?1:0;
+ const err=m=>{$('perr').textContent=m};
+ if(S.me){S.users[S.me].bio=b;S.users[S.me].priv=pr;save();closeP();render();toast('Profile updated');return}
+ if(!/^[a-z0-9_]{3,20}$/.test(n))return err('Use 3 to 20 letters, numbers or underscores.');
+ if(S.users[n])return err('That username is taken. Try another.');
+ S.me=n;S.users[n]={bio:b,priv:pr,g:4,fr:0,fg:0};save();closeP();view='home';render();toast('Welcome to Hey Buddy, '+n);
+};
+S.requested.forEach(u=>setTimeout(()=>approve(u),4000));
+if(!S.me)openP(false);
+render();
+</script>
+</body>
+</html>
